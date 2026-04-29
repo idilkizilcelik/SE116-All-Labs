@@ -1,144 +1,172 @@
-import java.util.Scanner;
- class Book{
-    private String  isbn;
-    private int PageCount;
-    private String title;
-    private int price;
-    public Book (String  isbn, int PageCount, String title , int price){
-        this.isbn= isbn;
-        this.PageCount= PageCount;
-        this.title= title;
-        this.price= price;
-    }
-    public String getisbn(){
-        return this.isbn;
-    }
-    public int getPageCount(){
-        return this.PageCount;
-    }
-    public String gettitle(){
-     return this.title;}
-     public int getprice(){
-        return this.price;
-     }
-     public void setisbn(String  isbn){
-        this.isbn= isbn;
-     }
-     public void setPageCount(int PageCount){
-        this.PageCount=PageCount;
-     }
-     public void settitle(String title){
-        this.title=title;
-     }
-     public void setprice(int price){
-        this.price=price;
-     }
-}
-class Librarians {
-    private int employeeID;
+import java.util.ArrayList;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+class Student implements Comparable<Student> {
     private String name;
-    private int age;
-    private Book[] respbooks;
+    private int studentID;
+    private double gpa;
 
-    public Librarians(int employeeID, String name, int age) {
-        this.employeeID = employeeID;
+    public Student(String name, int studentID, double gpa) {
         this.name = name;
-        this.age = age;
-        this.respbooks = new Book[5];
+        this.gpa = gpa;
+        this.studentID = studentID;
     }
 
-    public int getemployeeID() {
-        return employeeID;
+    public int getstudentID() {
+        return studentID;
     }
 
     public String getname() {
         return name;
     }
 
-    public int getage() {
-        return age;
+    public double getgpa() {
+        return gpa;
     }
 
-    public Book[] getrespbooks() {
-        return respbooks;
-    }
-
-    public void setemployeeID(int employeeID) {
-        this.employeeID = employeeID;
+    public void setstudentID(int studentID) {
+        this.studentID = studentID;
     }
 
     public void setname(String name) {
         this.name = name;
     }
 
-    public void setage(int age) {
-        this.age = age;
+    public void setgpa(double gpa) {
+        this.gpa = gpa;
     }
 
-    public void setrespbooks(Book[] respbooks) {
-        this.respbooks = respbooks;
+    @Override
+    public String toString() {
+        return "Name: " + name + " , Student ID: " + studentID + " , GPA: " + gpa;
     }
 
-    Scanner sc = new Scanner(System.in);
+    @Override
+    public int compareTo(Student other) {
+        return Integer.compare(this.studentID, other.studentID);
 
-    public Librarians adbook(Book book) {
-        for (int i = 0; i < 5; i++) {
-            if (respbooks[i] == null) {
-                respbooks[i] = book;
+    }
+
+    public void PrintInfo() {
+        System.out.println(name + " " + gpa + " " + studentID);
+    }
+
+}
+
+class EnrollmentDemo {
+    public static void main(String[] args) {
+        Student a = new Student("Halilişko", 3125678, 2.45);
+        Student b = new Student("Mükremin Gezgin DİVA", 202567867, 3.12);
+        Student c = new Student("Eröl Yıldırım", 564536625, 1.55);
+        Student t = new Student("idil", 2445667, 2.89);
+        Student k = new Student("Ali", 34526783, 1.95);
+        Course d = new Course(223, "MATH");
+        d.addStudent(k);
+        d.addStudent(t);
+        d.addStudent(a);
+        d.addStudent(b);
+        d.addStudent(c);
+        d.searchByName("ali");
+        //d.filterProbation();
+        //System.out.println(d.getenrolledStudents().size());
+        //Collections.sort(d.getenrolledStudents());
+        //System.out.println("By ID: " + d.getenrolledStudents());
+        //System.out.println();
+        //Collections.sort(d.getenrolledStudents() ,new GpaComparator());
+        //System.out.println("By GPA: " + d.getenrolledStudents());
+        System.out.println();
+
+
+        a.PrintInfo();
+        b.PrintInfo();
+        c.PrintInfo();
+
+    }
+}
+
+class Course {
+    private int courseCode;
+    private String courseName;
+    private ArrayList<Student> enrolledStudents;
+    private ArrayList<Student> probationList;
+
+    public Course(int courseCode, String courseName) {
+        enrolledStudents = new ArrayList<>();
+        probationList = new ArrayList<>();
+        this.courseName = courseName;
+        this.courseCode = courseCode;
+    }
+
+    public ArrayList<Student> getenrolledStudents() {
+        return enrolledStudents;
+    }
+
+    public void setenrolledStudents(ArrayList<Student> enrolledStudents) {
+        this.enrolledStudents = enrolledStudents;
+    }
+
+    public void addStudent(Student s) {
+        enrolledStudents.add(s);
+    }
+
+    public void displayEnrolledStudents() {
+        for (int i = 0; i < enrolledStudents.size(); i++) {
+            enrolledStudents.get(i).PrintInfo();
+            return;
+        }
+    }
+
+    public void removeStudentByID(int id) {
+        for (int i = 0; i < enrolledStudents.size(); i++) {
+            if (enrolledStudents.get(i).getstudentID() == id) {
+                enrolledStudents.remove(i);
+                System.out.println(id + " has been removed");
+                return;
+
             }
         }
-        return null;
+        System.out.println("Student not found");
     }
 
-    public Book removeBook(String isbn) {
-        for (int i = 0; i < 5; i++) {
-            if (respbooks[i].getisbn().equals(isbn)) {
-                respbooks[i] = null;
-                return respbooks[i];
+
+    public void filterProbation() {
+        for (int i = enrolledStudents.size() - 1; i >= 0; i--) {
+            if (2.0 > enrolledStudents.get(i).getgpa()) {
+                probationList.add(enrolledStudents.get(i));
+                enrolledStudents.remove(i);
             }
         }
-        return null;
     }
 
-    public Book findbook(String isbn) {
-        for (int i = 0; i < 5; i++) {
-            if (respbooks[i].getisbn().equals(isbn))
-                return respbooks[i];
-        }
-        return null;
-    }
+    public void searchByName(String keyword) {
+        ArrayList<Student> results;
+        results = new ArrayList<>();
+        for (int i = 0; i < enrolledStudents.size(); i++) {
+            if (enrolledStudents.get(i).getname().toLowerCase().contains(keyword.toLowerCase())) {
+                results.add(enrolledStudents.get(i));
+            }
+            for (int a = 0; i < probationList.size(); a++) {
 
-    public Book updateprice(Book book, double newPrice) {
-        if (book != null) {
-            book.setprice((int) newPrice);
+                if (probationList.get(a).getname().toLowerCase().contains(keyword.toLowerCase())) {
+                    results.add(probationList.get(a));
+                }
+            }
+
         }
-        return null;
+        System.out.println(results);
     }
-    public Book findBookAndApplyDiscount(String isbn, double discountPercentage){
-        Book book= findbook(isbn);
-        if (book !=null){
-            double newPrice = book.getprice() * (1 - discountPercentage / 100);
-            updateprice(book, newPrice);
-        }
-        return null;
 }
-    public Librarians displayallbooks(int enteremployeeID){
-        if(employeeID== enteremployeeID){
-            System.out.println(respbooks);
-        }
-        return null;
+
+class GpaComparator implements Comparator<Student> {
+    @Override
+    public int compare(Student s1, Student s2) {
+        return Double.compare(s1.getgpa(), s2.getgpa());
 
     }
-
 }
-public class Main{
-     public static void main(String [] args){
-         Scanner sc = new Scanner(System.in);
-         Book a = new Book;
-         Librarians b = new Librarians (2229 ,"John", 23);
-         b.adbook("Little Prince");
-         b.displayallbooks(2229);
 
-     }
-}
-  
+
+
