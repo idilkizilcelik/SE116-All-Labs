@@ -1,172 +1,121 @@
-import java.util.ArrayList;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
-class Student implements Comparable<Student> {
-    private String name;
-    private int studentID;
-    private double gpa;
+class Vehicle {
+    private String licensePlate;
+    private int dailyRate;
 
-    public Student(String name, int studentID, double gpa) {
-        this.name = name;
-        this.gpa = gpa;
-        this.studentID = studentID;
+    public Vehicle(String licensePlate, int dailyRate) {
+        this.licensePlate = licensePlate;
+        this.dailyRate = dailyRate;
     }
 
-    public int getstudentID() {
-        return studentID;
+    public int getdailyRate() {
+        return dailyRate;
     }
 
-    public String getname() {
-        return name;
+    public void setdailyRate(int dailyRate) {
+        this.dailyRate = dailyRate;
     }
 
-    public double getgpa() {
-        return gpa;
+    public int calculateRental(int days) {
+        int cost;
+        return cost = dailyRate * days;
     }
 
-    public void setstudentID(int studentID) {
-        this.studentID = studentID;
+    public void safetyCheck() {
+        System.out.println("Components checked");
+    }
+    public boolean checkRisk(){
+        return false;
     }
 
-    public void setname(String name) {
-        this.name = name;
-    }
-
-    public void setgpa(double gpa) {
-        this.gpa = gpa;
-    }
-
-    @Override
-    public String toString() {
-        return "Name: " + name + " , Student ID: " + studentID + " , GPA: " + gpa;
-    }
-
-    @Override
-    public int compareTo(Student other) {
-        return Integer.compare(this.studentID, other.studentID);
-
-    }
-
-    public void PrintInfo() {
-        System.out.println(name + " " + gpa + " " + studentID);
-    }
-
-}
-
-class EnrollmentDemo {
     public static void main(String[] args) {
-        Student a = new Student("Halilişko", 3125678, 2.45);
-        Student b = new Student("Mükremin Gezgin DİVA", 202567867, 3.12);
-        Student c = new Student("Eröl Yıldırım", 564536625, 1.55);
-        Student t = new Student("idil", 2445667, 2.89);
-        Student k = new Student("Ali", 34526783, 1.95);
-        Course d = new Course(223, "MATH");
-        d.addStudent(k);
-        d.addStudent(t);
-        d.addStudent(a);
-        d.addStudent(b);
-        d.addStudent(c);
-        d.searchByName("ali");
-        //d.filterProbation();
-        //System.out.println(d.getenrolledStudents().size());
-        //Collections.sort(d.getenrolledStudents());
-        //System.out.println("By ID: " + d.getenrolledStudents());
-        //System.out.println();
-        //Collections.sort(d.getenrolledStudents() ,new GpaComparator());
-        //System.out.println("By GPA: " + d.getenrolledStudents());
-        System.out.println();
-
-
-        a.PrintInfo();
-        b.PrintInfo();
-        c.PrintInfo();
-
-    }
-}
-
-class Course {
-    private int courseCode;
-    private String courseName;
-    private ArrayList<Student> enrolledStudents;
-    private ArrayList<Student> probationList;
-
-    public Course(int courseCode, String courseName) {
-        enrolledStudents = new ArrayList<>();
-        probationList = new ArrayList<>();
-        this.courseName = courseName;
-        this.courseCode = courseCode;
-    }
-
-    public ArrayList<Student> getenrolledStudents() {
-        return enrolledStudents;
-    }
-
-    public void setenrolledStudents(ArrayList<Student> enrolledStudents) {
-        this.enrolledStudents = enrolledStudents;
-    }
-
-    public void addStudent(Student s) {
-        enrolledStudents.add(s);
-    }
-
-    public void displayEnrolledStudents() {
-        for (int i = 0; i < enrolledStudents.size(); i++) {
-            enrolledStudents.get(i).PrintInfo();
+        Vehicle[]cars= new Vehicle[3];
+        cars[0]=new Vehicle("35 ADB 23", 200);
+        cars[1]=new Truck("34 GFH 12", 120, 45 );
+        cars[2]= new HeavyDutyTruck("23 UYT 89" , 400, 35,3);
+        for(int i= 0; i<cars.length; i++){
+            Vehicle a= cars[0];
+            Vehicle b= cars[1];
+            Vehicle c= cars[2];
+            System.out.println(a.licensePlate);
+            System.out.println("Rental 6 days: " + a.calculateRental(6));
+            a.safetyCheck();
+            System.out.println(b.licensePlate);
+            System.out.println("Rental 6 days: " + b.calculateRental(6));
+            b.safetyCheck();
+            System.out.println(b.checkRisk());
+            System.out.println(c.licensePlate);
+            System.out.println("Rental 6 days: " + c.calculateRental(6));
+            c.safetyCheck();
+            System.out.println();
             return;
+
+        }
+
+
         }
     }
 
-    public void removeStudentByID(int id) {
-        for (int i = 0; i < enrolledStudents.size(); i++) {
-            if (enrolledStudents.get(i).getstudentID() == id) {
-                enrolledStudents.remove(i);
-                System.out.println(id + " has been removed");
-                return;
+    class Truck extends Vehicle {
+        private int cargoCapacity;
 
-            }
+        public Truck(String licensePlate, int dailyRate, int cargoCapacity) {
+            super(licensePlate, dailyRate);
+            this.cargoCapacity = cargoCapacity;
         }
-        System.out.println("Student not found");
-    }
-
-
-    public void filterProbation() {
-        for (int i = enrolledStudents.size() - 1; i >= 0; i--) {
-            if (2.0 > enrolledStudents.get(i).getgpa()) {
-                probationList.add(enrolledStudents.get(i));
-                enrolledStudents.remove(i);
-            }
+        public int getcargoCapacity(){
+            return cargoCapacity;
         }
-    }
+        public void setcargoCapacity(int cargoCapacity){
+            this.cargoCapacity=cargoCapacity;
+        }
 
-    public void searchByName(String keyword) {
-        ArrayList<Student> results;
-        results = new ArrayList<>();
-        for (int i = 0; i < enrolledStudents.size(); i++) {
-            if (enrolledStudents.get(i).getname().toLowerCase().contains(keyword.toLowerCase())) {
-                results.add(enrolledStudents.get(i));
+        public Truck() {
+                super("27 BLK 27", 200);
             }
-            for (int a = 0; i < probationList.size(); a++) {
 
-                if (probationList.get(a).getname().toLowerCase().contains(keyword.toLowerCase())) {
-                    results.add(probationList.get(a));
+            @Override
+            public void safetyCheck () {
+                if (cargoCapacity > 40) {
+                    System.out.println("UNSAFE TO GO");
+                } else {
+                    System.out.println("SAFE TO GO");
                 }
             }
+            @Override
+        public boolean checkRisk(){
+            if(cargoCapacity>20){
+                return true;
+            }else{
+                return false;
+            }
+            }
+
 
         }
-        System.out.println(results);
-    }
-}
 
-class GpaComparator implements Comparator<Student> {
-    @Override
-    public int compare(Student s1, Student s2) {
-        return Double.compare(s1.getgpa(), s2.getgpa());
+        class HeavyDutyTruck extends Truck {
+            private int axleCount;
 
-    }
-}
+            public HeavyDutyTruck(String licensePlate, int dailyRate, int cargoCapacity, int axleCount) {
+                super(licensePlate, dailyRate, cargoCapacity);
+                this.axleCount = axleCount;
+            }
 
+            @Override
+            public int calculateRental(int days) {
+                int cost;
+                return cost = super.getdailyRate() * days * axleCount;
+            }
 
+            @Override
+            public boolean checkRisk() {
+                if (axleCount > 4) {
+                    return true;
+                }else{
+                    return false;
+                }
 
+            }
+
+        }
