@@ -1,121 +1,162 @@
+import java.util.Scanner;
+import java.util.HashMap;
+import java.util.Map;
+class Shipment {
+    private int weightKg;
+    private String trackingNo;
+    private String contentType;
+    private int distanceKm;
 
-class Vehicle {
-    private String licensePlate;
-    private int dailyRate;
-
-    public Vehicle(String licensePlate, int dailyRate) {
-        this.licensePlate = licensePlate;
-        this.dailyRate = dailyRate;
+    public Shipment(int weightKg, String trackingNo, String contentType, int distanceKm) {
+        this.weightKg = weightKg;
+        this.trackingNo = trackingNo;
+        this.contentType = contentType;
+        this.distanceKm = distanceKm;
     }
 
-    public int getdailyRate() {
-        return dailyRate;
+    public int getweightKg() {
+        return weightKg;
     }
 
-    public void setdailyRate(int dailyRate) {
-        this.dailyRate = dailyRate;
+    public String gettrackingNo() {
+        return trackingNo;
     }
 
-    public int calculateRental(int days) {
-        int cost;
-        return cost = dailyRate * days;
+    public String getcontentType() {
+        return contentType;
     }
 
-    public void safetyCheck() {
-        System.out.println("Components checked");
-    }
-    public boolean checkRisk(){
-        return false;
+    public int getdistanceKm() {
+        return distanceKm;
     }
 
-    public static void main(String[] args) {
-        Vehicle[]cars= new Vehicle[3];
-        cars[0]=new Vehicle("35 ADB 23", 200);
-        cars[1]=new Truck("34 GFH 12", 120, 45 );
-        cars[2]= new HeavyDutyTruck("23 UYT 89" , 400, 35,3);
-        for(int i= 0; i<cars.length; i++){
-            Vehicle a= cars[0];
-            Vehicle b= cars[1];
-            Vehicle c= cars[2];
-            System.out.println(a.licensePlate);
-            System.out.println("Rental 6 days: " + a.calculateRental(6));
-            a.safetyCheck();
-            System.out.println(b.licensePlate);
-            System.out.println("Rental 6 days: " + b.calculateRental(6));
-            b.safetyCheck();
-            System.out.println(b.checkRisk());
-            System.out.println(c.licensePlate);
-            System.out.println("Rental 6 days: " + c.calculateRental(6));
-            c.safetyCheck();
-            System.out.println();
-            return;
-
-        }
-
-
-        }
+    public void setweightKg(int weightKg) {
+        this.weightKg = weightKg;
     }
 
-    class Truck extends Vehicle {
-        private int cargoCapacity;
+    public void settrackingNo(String trackingNo) {
+        this.trackingNo = trackingNo;
+    }
 
-        public Truck(String licensePlate, int dailyRate, int cargoCapacity) {
-            super(licensePlate, dailyRate);
-            this.cargoCapacity = cargoCapacity;
+    public void setcontentType(String contentType) {
+        this.contentType = contentType;
+    }
+
+    public void setdistanceKm(int distanceKm) {
+        this.distanceKm = distanceKm;
+    }
+
+    public double calculateFee() {
+        double fee;
+        fee = (weightKg * distanceKm);
+        return fee;
+    }
+
+    public void printReceipt() {
+        double totalFee;
+        totalFee = calculateFee();
+        System.out.println(trackingNo + " " + contentType + " " + weightKg + " " + distanceKm + " " + totalFee);
+    }
+
+
+
+}
+
+
+class StandardShipping extends Shipment {
+    public StandardShipping(String trackingNo, String contentType, int weightKg, int distanceKm) {
+        super(weightKg, trackingNo, contentType, distanceKm);
+    }
+
+    @Override
+    public double calculateFee() {
+        double fee = ((1.5*super.getweightKg())+(0.08*super.getdistanceKm())+15.0);
+        return fee;
+
+
+    }
+
+}
+class ExpressShipping extends Shipment {
+    public ExpressShipping(String trackingNo, String contentType, int weightKg, int distanceKm) {
+        super(weightKg, trackingNo, contentType, distanceKm);
+    }
+
+    @Override
+    public double calculateFee() {
+        double fee = ((2.2*super.getweightKg())+(0.12*super.getdistanceKm())+25.0+20.0);
+        return fee;
+
+
+    }
+
+}
+class InternationalShipping extends Shipment {
+    public InternationalShipping(String trackingNo, String contentType, int weightKg, int distanceKm) {
+        super(weightKg, trackingNo, contentType, distanceKm);
+    }
+
+    @Override
+    public double calculateFee() {
+        double fee;
+        if (super.getdistanceKm() <= 800) {
+            fee = ((3.0 * super.getweightKg()) + (0.15 * super.getdistanceKm()) + 30.0 + 40.0);
+
+        } else {
+            fee = (((3.0 * super.getweightKg()) + (0.15 * super.getdistanceKm()) + 30.0 + 40.0 + 35.0));
+
         }
-        public int getcargoCapacity(){
-            return cargoCapacity;
-        }
-        public void setcargoCapacity(int cargoCapacity){
-            this.cargoCapacity=cargoCapacity;
-        }
-
-        public Truck() {
-                super("27 BLK 27", 200);
-            }
-
-            @Override
-            public void safetyCheck () {
-                if (cargoCapacity > 40) {
-                    System.out.println("UNSAFE TO GO");
-                } else {
-                    System.out.println("SAFE TO GO");
-                }
-            }
-            @Override
-        public boolean checkRisk(){
-            if(cargoCapacity>20){
-                return true;
-            }else{
-                return false;
-            }
-            }
+        return fee;
 
 
-        }
+    }
 
-        class HeavyDutyTruck extends Truck {
-            private int axleCount;
+}
+ class SwiftRouteApp {
+     public static void main(String[] args) {
+         Scanner sc = new Scanner(System.in);
+         System.out.println("====Shipping Menu===\n" + "1=Standard\n" + "2=Express\n" + "3=International\n");
+         int choose = sc.nextInt();
+         System.out.println("Please enter your Shipment details:");
 
-            public HeavyDutyTruck(String licensePlate, int dailyRate, int cargoCapacity, int axleCount) {
-                super(licensePlate, dailyRate, cargoCapacity);
-                this.axleCount = axleCount;
-            }
+         System.out.println("Tracking No : ");
+         sc.nextLine();
+         String track = sc.nextLine();
+         System.out.println("Content Type :");
+         String content = sc.nextLine();
+         System.out.println("Weight : ");
+         int weight = sc.nextInt();
+         System.out.println("Distance: ");
+         int distance = sc.nextInt();
+         HashMap<String, Shipment> shipmentMap= new HashMap<>();
+         String key=content+track;
+         for(int i=0; i<5; i++) {
+             Shipment a = null;
 
-            @Override
-            public int calculateRental(int days) {
-                int cost;
-                return cost = super.getdailyRate() * days * axleCount;
-            }
 
-            @Override
-            public boolean checkRisk() {
-                if (axleCount > 4) {
-                    return true;
-                }else{
-                    return false;
-                }
+             if (choose == 1) {
+                 a = new StandardShipping(track, content, weight, distance);
+                 System.out.println(a.calculateFee());
 
-            }
+             }
+             if (choose == 2) {
+                 a = new ExpressShipping(track, content, weight, distance);
+                 System.out.println(a.calculateFee());
 
-        }
+             }
+             if (choose == 3) {
+                 a = new InternationalShipping(track, content, weight, distance);
+                 System.out.println(a.calculateFee());
+
+
+             }
+             shipmentMap.put(key, a);
+             for(Map.Entry<String, Shipment> entry: shipmentMap.entrySet() ){
+                 entry.getValue().printReceipt();
+                 return;
+             }
+         }
+
+
+     }
+ }
